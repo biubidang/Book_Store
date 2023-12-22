@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bookstore?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: fw030425
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 5MB
+mybatis-plus:
+  configuration:
+    # 日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto #id生成规则：数据库id自增
