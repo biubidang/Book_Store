@@ -1,6 +1,7 @@
 package com.sqlwork.book_store.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sqlwork.book_store.domain.ResponseResult;
 import com.sqlwork.book_store.domain.entity.Books;
 
 
@@ -12,4 +13,5 @@ import com.sqlwork.book_store.domain.entity.Books;
  */
 public interface BooksService extends IService<Books> {
 
+    ResponseResult addBook(Books books);
 }
