@@ -2,7 +2,6 @@ package com.sqlwork.book_store.domain.entity;
 
 import java.util.Date;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +22,6 @@ public class BookRegistrations {
     @TableId
     private Long id;
 
-    private Long parentId;
-
     private String bookIsbn;
 
     private String bookName;
@@ -34,5 +31,7 @@ public class BookRegistrations {
     private Integer numbers;
 
     private Date time;
+
+    private Float pPrice;
 
 }

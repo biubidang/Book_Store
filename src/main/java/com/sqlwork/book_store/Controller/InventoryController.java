@@ -1,5 +1,6 @@
 package com.sqlwork.book_store.Controller;
 
+import com.sqlwork.book_store.Service.BookRegistrationsService;
 import com.sqlwork.book_store.Service.BooksService;
 import com.sqlwork.book_store.domain.ResponseResult;
 import com.sqlwork.book_store.domain.entity.Books;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class InventoryController {
     @Autowired
     private BooksService booksService;
+
     @PostMapping("/new")
     public ResponseResult addBook(@RequestBody Books books){
         return booksService.addBook(books);
@@ -35,5 +37,13 @@ public class InventoryController {
     @GetMapping("/information/search")
     public ResponseResult searchBook(String keyword){
         return booksService.searchBook(keyword);
+    }
+    @PostMapping("/registrations")
+    public ResponseResult registration(){
+        return booksService.registration();
+    }
+    @DeleteMapping("/delRegistrations")
+    public ResponseResult delRegistrations(){
+        return booksService.delRegistration();
     }
 }

@@ -19,7 +19,8 @@ public enum HttpCodeEnum {
     NICKNAME_EXIST(511, "昵称已存在"),
     BOOK_ISBN_NOT_NULL(520,"书号不能为空"),
     BOOK_NAME_EXIST(521,"书名已经存在"),
-    BOOK_INVENTORY_NOT_ENOUGH(522,"库存不足");
+    BOOK_INVENTORY_NOT_ENOUGH(522,"库存不足"),
+    BOOK_REGISTRATION_CREATED_TODAY(523,"今日已经生成过缺货提醒");
     int code;
     String msg;
 

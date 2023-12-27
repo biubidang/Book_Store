@@ -20,4 +20,9 @@ public interface BooksService extends IService<Books> {
     ResponseResult getInfo(Long id);
 
     ResponseResult searchBook(String keyword);
+
+
+    ResponseResult registration();
+
+    ResponseResult delRegistration();
 }
