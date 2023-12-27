@@ -3,6 +3,7 @@ package com.sqlwork.book_store.Service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sqlwork.book_store.Mapper.BookOrderMapper;
 import com.sqlwork.book_store.Service.BookOrderService;
+import com.sqlwork.book_store.domain.ResponseResult;
 import com.sqlwork.book_store.domain.entity.BookOrder;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +16,9 @@ import org.springframework.stereotype.Service;
 @Service("bookOrderService")
 public class BookOrderServiceImpl extends ServiceImpl<BookOrderMapper, BookOrder> implements BookOrderService {
 
+    @Override
+    public ResponseResult purchase() {
+        
+        return null;
+    }
 }

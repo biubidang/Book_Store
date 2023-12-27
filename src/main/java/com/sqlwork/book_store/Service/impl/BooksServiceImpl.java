@@ -3,14 +3,20 @@ package com.sqlwork.book_store.Service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sqlwork.book_store.Mapper.BooksMapper;
+import com.sqlwork.book_store.Service.BookRegistrationsService;
 import com.sqlwork.book_store.Service.BooksService;
+import com.sqlwork.book_store.Utils.TimeUtil;
 import com.sqlwork.book_store.domain.ResponseResult;
+import com.sqlwork.book_store.domain.entity.BookRegistrations;
 import com.sqlwork.book_store.domain.entity.Books;
 import com.sqlwork.book_store.enums.HttpCodeEnum;
 import com.sqlwork.book_store.exception.SystemException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +27,9 @@ import java.util.List;
  */
 @Service("booksService")
 public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements BooksService {
+
+    @Autowired
+    private BookRegistrationsService bookRegistrationsService;
 
     @Override
     public ResponseResult addBook(Books books) {
@@ -66,6 +75,36 @@ public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements
         return ResponseResult.okResult(list);
     }
 
+    @Override
+    public ResponseResult registration() {
+        if(bookRegistrationsService.TimeExist(TimeUtil.getNowDateShort())){
+            throw new SystemException(HttpCodeEnum.BOOK_REGISTRATION_CREATED_TODAY);
+        }
+        LambdaQueryWrapper<Books> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.lt(Books::getInventory,5);
+        for(Books book:list(queryWrapper)){
+            BookRegistrations bookRegistrations=new BookRegistrations();
+            bookRegistrations.setBookIsbn(book.getIsbn());
+            bookRegistrations.setBookName(book.getName());
+            bookRegistrations.setNumbers(20-book.getInventory());
+            bookRegistrations.setTime(new Date());
+            bookRegistrations.setPPrice(book.getPrize());
+            bookRegistrationsService.saveOrUpdate(bookRegistrations,new LambdaQueryWrapper<BookRegistrations>()
+                    .eq(BookRegistrations::getBookName,bookRegistrations.getBookName()));
+        }
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult delRegistration() {
+        LambdaQueryWrapper<Books> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.ge(Books::getInventory,20);
+        for (Books book:list(queryWrapper)){
+            bookRegistrationsService.remove(new LambdaQueryWrapper<BookRegistrations>()
+                    .eq(BookRegistrations::getBookName,book.getName()));
+        }
+        return ResponseResult.okResult();
+    }
 
     private boolean bookNameExist(String bookName) {
         LambdaQueryWrapper<Books> queryWrapper = new LambdaQueryWrapper<>();
