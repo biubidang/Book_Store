@@ -11,6 +11,8 @@ import com.sqlwork.book_store.exception.SystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * (Books)表服务实现类
  *
@@ -31,6 +33,40 @@ public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements
         save(books);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult updateInventory(Long id, Integer addNum, Integer minusNum) {
+        Books books=getById(id);
+        if(addNum<0||minusNum<0){
+            throw new SystemException(HttpCodeEnum.SYSTEM_ERROR);
+        }
+        if(books.getInventory()-minusNum<0){
+            throw new SystemException(HttpCodeEnum.BOOK_INVENTORY_NOT_ENOUGH);
+        }
+        books.setInventory(books.getInventory()-minusNum+addNum);
+        updateById(books);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult getInfo(Long id) {
+        Books book=getById(id);
+        return ResponseResult.okResult(book);
+    }
+
+    @Override
+    public ResponseResult searchBook(String keyword) {
+        LambdaQueryWrapper<Books> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.like(Books::getKeywords,keyword).or().
+                like(Books::getIsbn,keyword).or().
+                like(Books::getAuthor1,keyword).or().
+                like(Books::getName,keyword).or().
+                like(Books::getPublishingHouse,keyword);
+        List<Books> list=list(queryWrapper);
+        return ResponseResult.okResult(list);
+    }
+
+
     private boolean bookNameExist(String bookName) {
         LambdaQueryWrapper<Books> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Books::getName,bookName);

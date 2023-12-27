@@ -8,17 +8,18 @@ public enum HttpCodeEnum {
     NO_OPERATOR_AUTH(403,"无权限操作"),
     SYSTEM_ERROR(500,"出现错误"),
     USERNAME_EXIST(501,"用户名已存在"),
-    EMAIL_EXIST(503, "邮箱已存在"),
-    REQUIRE_USERNAME(504, "必需填写用户名"),
-    LOGIN_ERROR(505,"用户名或密码错误"),
-    FILE_TYPE_ERROR(506,"上传文件类型错误" ),
-    USERNAME_NOT_NULL(507, "用户名不能为空"),
-    PASSWORD_NOT_NULL(508, "密码不能为空"),
+    EMAIL_EXIST(502, "邮箱已存在"),
+    REQUIRE_USERNAME(503, "必需填写用户名"),
+    LOGIN_ERROR(504,"用户名或密码错误"),
+    FILE_TYPE_ERROR(505,"上传文件类型错误" ),
+    USERNAME_NOT_NULL(506, "用户名不能为空"),
+    PASSWORD_NOT_NULL(507, "密码不能为空"),
     EMAIL_NOT_NULL(509,"邮箱不能为空" ),
     NICKNAME_NOT_NULL(510,"昵称不能为空" ),
     NICKNAME_EXIST(511, "昵称已存在"),
-    BOOK_ISBN_NOT_NULL(512,"书号不能为空"),
-    BOOK_NAME_EXIST(513,"书名已经存在");
+    BOOK_ISBN_NOT_NULL(520,"书号不能为空"),
+    BOOK_NAME_EXIST(521,"书名已经存在"),
+    BOOK_INVENTORY_NOT_ENOUGH(522,"库存不足");
     int code;
     String msg;
 

@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * (Books)表实体类
  *
  * @author makejava
- * @since 2023-12-24 00:47:31
+ * @since 2023-12-27 17:20:09
  */
 @SuppressWarnings("serial")
 @Data
@@ -46,6 +46,5 @@ public class Books {
     private Integer inventory;
 
     private String suppliers;
-
 
 }
