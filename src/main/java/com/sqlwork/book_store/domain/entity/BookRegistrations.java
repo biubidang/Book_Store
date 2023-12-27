@@ -23,12 +23,13 @@ public class BookRegistrations {
     @TableId
     private Long id;
 
+    private Long parentId;
 
     private String bookIsbn;
 
     private String bookName;
 
-    private String supliers;
+    private String suppliers;
 
     private Integer numbers;
 

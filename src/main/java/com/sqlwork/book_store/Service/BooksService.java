@@ -14,4 +14,10 @@ import com.sqlwork.book_store.domain.entity.Books;
 public interface BooksService extends IService<Books> {
 
     ResponseResult addBook(Books books);
+
+    ResponseResult updateInventory(Long id,Integer addNum,Integer minusNum);
+
+    ResponseResult getInfo(Long id);
+
+    ResponseResult searchBook(String keyword);
 }
