@@ -28,7 +28,7 @@ public class BookOrder {
 
     private Integer totalSum;
 
-    private Integer totalAmount;
+    private Float totalAmount;
     //0:未处理 1正常发货完成 2部分发货（或者有缺货等待）
     private Integer status;
 
