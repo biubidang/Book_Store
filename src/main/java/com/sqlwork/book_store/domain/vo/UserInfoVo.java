@@ -21,6 +21,7 @@ public class UserInfoVo {
     /**
      * 邮箱
      */
+    private Float accountBalance;
 
     private String eMail;
 
