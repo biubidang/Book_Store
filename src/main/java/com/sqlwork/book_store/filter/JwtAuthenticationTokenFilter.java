@@ -1,7 +1,6 @@
 package com.sqlwork.book_store.filter;
 
 import com.alibaba.fastjson.JSON;
-
 import com.sqlwork.book_store.Utils.JwtUtil;
 import com.sqlwork.book_store.Utils.RedisCache;
 import com.sqlwork.book_store.Utils.WebUtils;
@@ -9,10 +8,6 @@ import com.sqlwork.book_store.domain.ResponseResult;
 import com.sqlwork.book_store.domain.entity.LoginUser;
 import com.sqlwork.book_store.enums.HttpCodeEnum;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +16,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -31,7 +30,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private RedisCache redisCache;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ServletException {
         //获取请求头中的token
         String token = request.getHeader("token");
         if(!StringUtils.hasText(token)){
@@ -53,7 +52,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         String userId = claims.getSubject();
         //从redis中获取用户信息
-        LoginUser loginUser = redisCache.getCacheObject("bloglogin:" + userId);
+        LoginUser loginUser = redisCache.getCacheObject("book_store_login:" + userId);
         //如果获取不到
         if(Objects.isNull(loginUser)){
             //说明登录过期  提示重新登录
