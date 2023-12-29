@@ -14,4 +14,8 @@ import com.sqlwork.book_store.domain.entity.Customers;
 public interface CustomersService extends IService<Customers> {
 
     ResponseResult register(Customers user) ;
+
+    ResponseResult getUserInfo();
+
+    ResponseResult updateUserInfo(Customers user);
 }

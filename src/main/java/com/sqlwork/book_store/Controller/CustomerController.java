@@ -17,5 +17,13 @@ public class CustomerController {
     public ResponseResult register(@RequestBody Customers user){
         return customersService.register(user);
     }
+    @GetMapping("/userInfo")
+    public ResponseResult getUserInfo(){
+        return  customersService.getUserInfo();
+    }
+    @PutMapping("/userInfo")
+    public ResponseResult updateUserInfo(@RequestBody Customers user){
+        return  customersService.updateUserInfo(user);
+    }
 
 }
