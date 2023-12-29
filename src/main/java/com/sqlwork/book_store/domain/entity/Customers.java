@@ -22,8 +22,9 @@ public class Customers {
     @TableId
     private Long id;
 
-
     private String password;
+
+    private String userName;
 
     private String nickName;
 
@@ -34,5 +35,7 @@ public class Customers {
     private Integer creditLevel;
 
     private Float accountBalance;
+
+    private Integer isAdmin;
 }
 
