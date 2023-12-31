@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 /**
  * (Customers)表服务实现类
  *
@@ -71,10 +73,53 @@ public class CustomersServiceImpl extends ServiceImpl<CustomersMapper, Customers
 
     @Override
     public ResponseResult updateUserInfo(Customers user) {
-
+        Long userId=SecurityUtils.getUserId();
+        if(!Objects.equals(userId, user.getId())){
+            throw new SystemException(HttpCodeEnum.NO_OPERATOR_AUTH);
+        }
+        if(StringUtils.hasText(user.getUserName())||StringUtils.hasText(user.getEMail())
+        ||StringUtils.hasText(String.valueOf(user.getCreditLevel()))||StringUtils.hasText(String.valueOf(user.getAccountBalance()))
+        ||StringUtils.hasText(String.valueOf(user.getIsAdmin()))){
+            throw new SystemException(HttpCodeEnum.NO_OPERATOR_AUTH);
+        }
         updateById(user);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public ResponseResult updateCredit(Float amount) {
+        //获取id
+        Long userId= SecurityUtils.getUserId();
+        //根据id查个人信息
+        Customers user =getById(userId);
+        if(amount<=0){
+            throw new SystemException(HttpCodeEnum.SYSTEM_ERROR);
+        }
+        Float newBalance=user.getAccountBalance()+amount;
+        float newTotal=user.getTotalConsumption()+amount;
+        int creditLevel=0;
+        if(newTotal<200&&newTotal>=100){
+            creditLevel=1;
+        }
+        else if(newTotal>=200&&newTotal<500){
+            creditLevel=2;
+        }
+        else if(newTotal>=500&&newTotal<800){
+            creditLevel=3;
+        }
+        else if(newTotal>=800&&newTotal<1000){
+            creditLevel=4;
+        }else if(newTotal>1000){
+            creditLevel=5;
+        }
+        user.setId(userId);
+        user.setCreditLevel(creditLevel);
+        user.setAccountBalance(newBalance);
+        user.setTotalConsumption(newTotal);
+        updateById(user);
+        return ResponseResult.okResult();
+    }
+
 
     private boolean nickNameExist(String nickName) {
         LambdaQueryWrapper<Customers> queryWrapper = new LambdaQueryWrapper<>();

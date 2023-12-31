@@ -37,5 +37,7 @@ public class Customers {
     private Float accountBalance;
 
     private Integer isAdmin;
+
+    private Float totalConsumption;
 }
 

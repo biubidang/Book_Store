@@ -18,4 +18,6 @@ public interface CustomersService extends IService<Customers> {
     ResponseResult getUserInfo();
 
     ResponseResult updateUserInfo(Customers user);
+
+    ResponseResult updateCredit(Float amount);
 }
