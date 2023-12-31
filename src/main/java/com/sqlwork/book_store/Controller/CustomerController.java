@@ -25,5 +25,9 @@ public class CustomerController {
     public ResponseResult updateUserInfo(@RequestBody Customers user){
         return  customersService.updateUserInfo(user);
     }
+    @PutMapping("/updateCredit")
+    public ResponseResult updateCredit(Float amount){
+        return customersService.updateCredit(amount);
+    }
 
 }

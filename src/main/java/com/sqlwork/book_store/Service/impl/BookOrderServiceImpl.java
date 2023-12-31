@@ -5,9 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sqlwork.book_store.Mapper.BookOrderMapper;
 import com.sqlwork.book_store.Service.BookOrderService;
 import com.sqlwork.book_store.Service.BookRegistrationsService;
+import com.sqlwork.book_store.Service.OrderDetailService;
+import com.sqlwork.book_store.Utils.SecurityUtils;
 import com.sqlwork.book_store.domain.ResponseResult;
 import com.sqlwork.book_store.domain.entity.BookOrder;
 import com.sqlwork.book_store.domain.entity.BookRegistrations;
+import com.sqlwork.book_store.domain.entity.Books;
+import com.sqlwork.book_store.domain.entity.OrderDetail;
+import com.sqlwork.book_store.domain.vo.BookBuyingVo;
 import com.sqlwork.book_store.enums.HttpCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,9 @@ import java.util.Date;
 public class BookOrderServiceImpl extends ServiceImpl<BookOrderMapper, BookOrder> implements BookOrderService {
     @Autowired
     private BookRegistrationsService bookRegistrationsService;
+
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     @Override
     public ResponseResult purchase() {
@@ -45,4 +53,37 @@ public class BookOrderServiceImpl extends ServiceImpl<BookOrderMapper, BookOrder
         save(bookOrder);
         return ResponseResult.okResult(bookOrder);
     }
+
+    @Override
+    public ResponseResult createOrder(BookBuyingVo[] books) {
+        BookOrder bookOrder=new BookOrder();
+        Long userId= SecurityUtils.getUserId();
+        float amount=0f;
+        int sum=0;
+        for (BookBuyingVo book: books) {
+            amount+=book.getPrize()*book.getNum();
+            sum+=book.getNum();
+        }
+        bookOrder.setCategory(1);
+        bookOrder.setCreatetime(new Date());
+        bookOrder.setCustomerId(userId);
+        bookOrder.setTotalAmount(amount);
+        bookOrder.setTotalSum(sum);
+        save(bookOrder);
+        Long orderId=bookOrder.getOrderId();
+        int j=0;
+        for (BookBuyingVo book: books) {
+            OrderDetail orderDetail=new OrderDetail();
+            orderDetail.setBookIsbn(book.getIsbn());
+            orderDetail.setBookName(book.getName());
+            orderDetail.setQuantity(book.getNum());
+            orderDetail.setParentId(orderId);
+            orderDetail.setAmount(book.getNum()*book.getPrize());
+            orderDetailService.save(orderDetail);
+            j++;
+        }
+        return ResponseResult.okResult();
+    }
+
+
 }

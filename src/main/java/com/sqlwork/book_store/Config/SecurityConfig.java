@@ -47,7 +47,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                 //
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/customer/userinfo").authenticated()
-                .antMatchers("/upload").authenticated()
+                .antMatchers("/order/createOrder").authenticated()
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().permitAll();
 
