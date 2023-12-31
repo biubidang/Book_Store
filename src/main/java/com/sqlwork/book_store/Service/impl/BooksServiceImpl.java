@@ -106,7 +106,7 @@ public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements
         return ResponseResult.okResult();
     }
 
-    private boolean bookNameExist(String bookName) {
+    public boolean bookNameExist(String bookName) {
         LambdaQueryWrapper<Books> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Books::getName,bookName);
         return count(queryWrapper)>0;

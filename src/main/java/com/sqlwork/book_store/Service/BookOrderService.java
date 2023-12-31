@@ -18,4 +18,5 @@ public interface BookOrderService extends IService<BookOrder> {
     ResponseResult purchase();
 
     ResponseResult createOrder(BookBuyingVo[] books);
+
 }

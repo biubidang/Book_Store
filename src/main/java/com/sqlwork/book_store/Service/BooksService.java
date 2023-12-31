@@ -25,4 +25,6 @@ public interface BooksService extends IService<Books> {
     ResponseResult registration();
 
     ResponseResult delRegistration();
+
+    public boolean bookNameExist(String bookName);
 }

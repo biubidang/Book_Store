@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sqlwork.book_store.Mapper.BookOrderMapper;
 import com.sqlwork.book_store.Service.BookOrderService;
 import com.sqlwork.book_store.Service.BookRegistrationsService;
+import com.sqlwork.book_store.Service.BooksService;
 import com.sqlwork.book_store.Service.OrderDetailService;
 import com.sqlwork.book_store.Utils.SecurityUtils;
 import com.sqlwork.book_store.domain.ResponseResult;
@@ -14,10 +15,13 @@ import com.sqlwork.book_store.domain.entity.Books;
 import com.sqlwork.book_store.domain.entity.OrderDetail;
 import com.sqlwork.book_store.domain.vo.BookBuyingVo;
 import com.sqlwork.book_store.enums.HttpCodeEnum;
+import com.sqlwork.book_store.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * (BookOrder)表服务实现类
@@ -32,6 +36,9 @@ public class BookOrderServiceImpl extends ServiceImpl<BookOrderMapper, BookOrder
 
     @Autowired
     private OrderDetailService orderDetailService;
+
+    @Autowired
+    private BooksService booksService;
 
     @Override
     public ResponseResult purchase() {
@@ -61,6 +68,9 @@ public class BookOrderServiceImpl extends ServiceImpl<BookOrderMapper, BookOrder
         float amount=0f;
         int sum=0;
         for (BookBuyingVo book: books) {
+            if(!booksService.bookNameExist(book.getName())){
+                throw new RuntimeException("书名不存在");
+            }
             amount+=book.getPrize()*book.getNum();
             sum+=book.getNum();
         }
@@ -84,6 +94,8 @@ public class BookOrderServiceImpl extends ServiceImpl<BookOrderMapper, BookOrder
         }
         return ResponseResult.okResult();
     }
+
+
 
 
 }
